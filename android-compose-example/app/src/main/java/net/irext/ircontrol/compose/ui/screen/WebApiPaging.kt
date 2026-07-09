@@ -11,12 +11,12 @@ import net.irext.webapi.model.StbOperator
 
 /**
  * Filename:       WebApiPaging.kt
- * Created:        Date: 2026-07-14
+ * Created:        Date: 2026-07-04
  *
- * Description:    Provides the WebApiPaging source for the IRControl Android Compose sample.
+ * Description:    Implements paging sources for web API category, brand, operator, and index data.
  *
  * Revision log:
- * 2026-07-14: created by shdmfire and strawmanbobi
+ * 2026-07-04: created by shdmfire
  */
 private fun nextOffset(from: Int, count: Int, loaded: Int): Int? =
     if (loaded < count) null else from + loaded

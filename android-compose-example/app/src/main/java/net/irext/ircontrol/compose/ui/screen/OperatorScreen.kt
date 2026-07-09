@@ -29,12 +29,12 @@ import net.irext.webapi.model.StbOperator
 
 /**
  * Filename:       OperatorScreen.kt
- * Created:        Date: 2026-07-14
+ * Created:        Date: 2026-07-04
  *
- * Description:    Provides the OperatorScreen source for the IRControl Android Compose sample.
+ * Description:    Displays set-top box operators for the selected city.
  *
  * Revision log:
- * 2026-07-14: created by shdmfire and strawmanbobi
+ * 2026-07-04: created by shdmfire
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

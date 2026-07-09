@@ -38,20 +38,22 @@ import kotlinx.coroutines.withContext
 import net.irext.ircontrol.compose.R
 import net.irext.ircontrol.compose.IRApplication
 import net.irext.ircontrol.compose.bean.RemoteControl
+import net.irext.ircontrol.compose.data.RemoteControlRepository
 import net.irext.ircontrol.compose.ui.composable.ItemIndexText
 import net.irext.ircontrol.compose.ui.navigation.RouteIndex
-import net.irext.ircontrol.compose.utils.FileUtils
+import net.irext.ircontrol.compose.utils.remoteBinFile
+import net.irext.ircontrol.compose.utils.writeFrom
 import net.irext.webapi.model.RemoteIndex
 
 
 /**
  * Filename:       IndexScreen.kt
- * Created:        Date: 2026-07-14
+ * Created:        Date: 2026-07-04
  *
- * Description:    Provides the IndexScreen source for the IRControl Android Compose sample.
+ * Description:    Displays remote indexes and saves the selected remote definition.
  *
  * Revision log:
- * 2026-07-14: created by shdmfire and strawmanbobi
+ * 2026-07-04: created by shdmfire
  */
 private sealed class IndexActionState {
     data object Idle : IndexActionState()
@@ -72,6 +74,7 @@ fun IndexScreen(
 ) {
     val app = LocalContext.current.applicationContext as IRApplication
     val appContext = LocalContext.current.applicationContext
+    val repository = remember { RemoteControlRepository() }
     var actionState by remember { mutableStateOf<IndexActionState>(IndexActionState.Idle) }
     val scope = rememberCoroutineScope()
     val indexFlow = remember(app.mWeAPIs, route) {
@@ -102,8 +105,7 @@ fun IndexScreen(
                 val stream = WebApiHelper.downloadBin(app.mWeAPIs, index.remoteMap, index.id)
                 actionState = IndexActionState.Saving
                 withContext(Dispatchers.IO) {
-                    val binFile = FileUtils.getBinFile(appContext, index.remoteMap)
-                    FileUtils.write(binFile, stream)
+                    appContext.remoteBinFile(index.remoteMap).writeFrom(stream)
                 }
                 val rc = RemoteControl()
                 rc.categoryId = index.categoryId
@@ -118,7 +120,7 @@ fun IndexScreen(
                 rc.remote = index.remote
                 rc.remoteMap = index.remoteMap
                 rc.subCategory = index.subCate
-                RemoteControl.createRemoteControl(rc)
+                repository.save(rc)
                 actionState = IndexActionState.Idle
                 onSaved()
             } catch (e: Exception) {

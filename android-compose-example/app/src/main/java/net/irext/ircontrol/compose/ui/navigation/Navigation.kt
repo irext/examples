@@ -18,12 +18,12 @@ import net.irext.ircontrol.compose.ui.screen.TestScreen
 
 /**
  * Filename:       Navigation.kt
- * Created:        Date: 2026-07-14
+ * Created:        Date: 2026-07-04
  *
- * Description:    Provides the Navigation source for the IRControl Android Compose sample.
+ * Description:    Defines the Compose navigation flow for selecting and controlling remotes.
  *
  * Revision log:
- * 2026-07-14: created by shdmfire and strawmanbobi
+ * 2026-07-04: created by shdmfire
  */
 fun buildEntryProvider(
     backStack: MutableList<Any>,

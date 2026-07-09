@@ -5,6 +5,16 @@ import androidx.compose.ui.test.onNodeWithText
 import org.junit.Rule
 import org.junit.Test
 
+/**
+ * Filename:       ItemComposableTest.kt
+ * Created:        Date: 2026-07-09
+ *
+ * Description:    Tests reusable Compose list item components.
+ *
+ * Revision log:
+ * 2026-07-09: created by shdmfire and strawmanbobi
+ */
+
 class ItemComposableTest {
 
     @get:Rule

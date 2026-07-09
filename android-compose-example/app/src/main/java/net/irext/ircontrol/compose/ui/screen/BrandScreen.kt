@@ -29,12 +29,12 @@ import net.irext.webapi.model.Brand
 
 /**
  * Filename:       BrandScreen.kt
- * Created:        Date: 2026-07-14
+ * Created:        Date: 2026-07-04
  *
- * Description:    Provides the BrandScreen source for the IRControl Android Compose sample.
+ * Description:    Displays brands for the selected device category.
  *
  * Revision log:
- * 2026-07-14: created by shdmfire and strawmanbobi
+ * 2026-07-04: created by shdmfire
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

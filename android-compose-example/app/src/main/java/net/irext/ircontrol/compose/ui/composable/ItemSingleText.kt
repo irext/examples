@@ -19,12 +19,12 @@ import net.irext.ircontrol.compose.ui.theme.IRControlTheme
 
 /**
  * Filename:       ItemSingleText.kt
- * Created:        Date: 2026-07-14
+ * Created:        Date: 2026-07-04
  *
- * Description:    Provides the ItemSingleText source for the IRControl Android Compose sample.
+ * Description:    Displays a selectable single-line list item.
  *
  * Revision log:
- * 2026-07-14: created by shdmfire and strawmanbobi
+ * 2026-07-04: created by shdmfire
  */
 /**
  * Composable replacement for item_brand.xml, item_category.xml, item_city.xml,

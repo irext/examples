@@ -37,12 +37,12 @@ import net.irext.webapi.model.City
 
 /**
  * Filename:       ProvinceScreen.kt
- * Created:        Date: 2026-07-14
+ * Created:        Date: 2026-07-04
  *
- * Description:    Provides the ProvinceScreen source for the IRControl Android Compose sample.
+ * Description:    Displays provinces for set-top box setup.
  *
  * Revision log:
- * 2026-07-14: created by shdmfire and strawmanbobi
+ * 2026-07-04: created by shdmfire
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

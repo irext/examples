@@ -14,12 +14,12 @@ import net.irext.ircontrol.compose.ui.theme.IRControlTheme
 
 /**
  * Filename:       MainActivity.kt
- * Created:        Date: 2026-07-14
+ * Created:        Date: 2026-07-04
  *
- * Description:    Provides the MainActivity source for the IRControl Android Compose sample.
+ * Description:    Hosts the Compose application and handles storage permission requests.
  *
  * Revision log:
- * 2026-07-14: created by shdmfire and strawmanbobi
+ * 2026-07-04: created by shdmfire
  */
 class MainActivity : ComponentActivity() {
 

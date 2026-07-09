@@ -17,12 +17,12 @@ import kotlin.coroutines.resumeWithException
 
 /**
  * Filename:       WebApiHelper.kt
- * Created:        Date: 2026-07-14
+ * Created:        Date: 2026-07-04
  *
- * Description:    Provides the WebApiHelper source for the IRControl Android Compose sample.
+ * Description:    Wraps web API callback calls as coroutine-friendly suspend functions.
  *
  * Revision log:
- * 2026-07-14: created by shdmfire and strawmanbobi
+ * 2026-07-04: created by shdmfire
  */
 /**
  * Coroutine-friendly wrappers for WebAPIs callback-based methods.

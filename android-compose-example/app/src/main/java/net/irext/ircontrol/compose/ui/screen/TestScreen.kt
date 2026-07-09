@@ -50,20 +50,21 @@ import kotlinx.coroutines.withContext
 import net.irext.ircontrol.compose.IRApplication
 import net.irext.ircontrol.compose.R
 import net.irext.ircontrol.compose.controller.PhoneRemote
-import net.irext.ircontrol.compose.controller.base.Remote
+import net.irext.ircontrol.compose.controller.ControlCommand
 import net.irext.ircontrol.compose.ui.navigation.RouteTest
-import net.irext.ircontrol.compose.utils.FileUtils
+import net.irext.ircontrol.compose.utils.remoteBinFile
+import net.irext.ircontrol.compose.utils.writeFrom
 import net.irext.webapi.model.RemoteIndex
 
 
 /**
  * Filename:       TestScreen.kt
- * Created:        Date: 2026-07-14
+ * Created:        Date: 2026-07-04
  *
- * Description:    Provides the TestScreen source for the IRControl Android Compose sample.
+ * Description:    Supports an IR test workflow for iterating through remote indexes.
  *
  * Revision log:
- * 2026-07-14: created by shdmfire and strawmanbobi
+ * 2026-07-04: created by shdmfire
  */
 private const val TEST_TAG = "TestScreen"
 private const val TEST_INDEX_BATCH_SIZE = 40
@@ -82,7 +83,7 @@ fun TestScreen(
     val app = LocalContext.current.applicationContext as IRApplication
     val context = LocalContext.current
     val appContext = context.applicationContext
-    val phoneRemote = remember { PhoneRemote.getInstance(appContext) }
+    val phoneRemote = remember { PhoneRemote(appContext) }
     val scope = rememberCoroutineScope()
     var currentPos by remember(route) { mutableIntStateOf(0) }
     var state by remember(route) { mutableStateOf<TestState>(TestState.Loading) }
@@ -140,10 +141,10 @@ fun TestScreen(
             try {
                 withContext(Dispatchers.IO) {
                     val stream = WebApiHelper.downloadBin(app.mWeAPIs, index.remoteMap, index.id)
-                    val binFile = FileUtils.getBinFile(appContext, index.remoteMap)
-                    FileUtils.write(binFile, stream)
+                    val binFile = appContext.remoteBinFile(index.remoteMap)
+                    binFile.writeFrom(stream)
 
-                    val openResult = phoneRemote.irOpen(
+                    val openResult = phoneRemote.openBinary(
                         binFile.absolutePath,
                         index.categoryId,
                         index.subCate,
@@ -153,7 +154,7 @@ fun TestScreen(
                         throw IllegalStateException(context.getString(R.string.open_ir_binary_failed, openResult))
                     }
 
-                    phoneRemote.irControl(index.categoryId, index.subCate, Remote.KEY_POWER)
+                    phoneRemote.control(index.categoryId, index.subCate, ControlCommand.Power)
                 }
                 Toast.makeText(context, context.getString(R.string.decode_and_send_success), Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
@@ -170,7 +171,7 @@ fun TestScreen(
     LaunchedEffect(route) { loadIndexes() }
 
     DisposableEffect(Unit) {
-        onDispose { phoneRemote.irClose() }
+        onDispose { phoneRemote.closeBinary() }
     }
 
     TestScreenContent(

@@ -1,46 +1,46 @@
 package net.irext.ircontrol.compose.controller
 
 import net.irext.ircontrol.compose.bean.RemoteControl
-import net.irext.ircontrol.compose.controller.base.ControlCommand
-
 
 /**
  * Filename:       RemoteController.kt
- * Created:        Date: 2026-07-14
+ * Created:        Date: 2026-07-09
  *
- * Description:    Provides the RemoteController source for the IRControl Android Compose sample.
+ * Description:    Defines common remote controller interfaces, categories, and results.
  *
  * Revision log:
- * 2026-07-14: created by shdmfire and strawmanbobi
+ * 2026-07-09: created by shdmfire and strawmanbobi
  */
-sealed interface ControlResult {
-    data object Success : ControlResult
-    data object Failed : ControlResult
-    data object PendingEmitterResult : ControlResult
-}
 
 class RemoteController(
     private val phoneRemote: PhoneRemote,
     private val arduinoRemote: ArduinoRemote,
 ) {
-    fun send(
+    suspend fun send(
         remoteControl: RemoteControl,
         command: ControlCommand,
+        acState: AcControlState? = null,
     ): ControlResult {
-        return if (arduinoRemote.connectionStatus == ArduinoRemote.EMITTER_WORKING) {
-            arduinoRemote.irControl(
+        return if (arduinoRemote.status.value == EmitterStatus.Working) {
+            arduinoRemote.control(
                 remoteControl.categoryId,
                 remoteControl.subCategory,
-                command.keyCode,
+                command,
+                acState,
             )
-            ControlResult.PendingEmitterResult
         } else {
-            val result = phoneRemote.irControl(
+            phoneRemote.control(
                 remoteControl.categoryId,
                 remoteControl.subCategory,
-                command.keyCode,
+                command,
+                acState,
             )
-            if (result == 0) ControlResult.Success else ControlResult.Failed
         }
     }
+}
+
+enum class ControlResult {
+    Success,
+    Failed,
+    PendingEmitterResult,
 }

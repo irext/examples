@@ -6,12 +6,12 @@ import kotlinx.serialization.Serializable
 
 /**
  * Filename:       Routes.kt
- * Created:        Date: 2026-07-14
+ * Created:        Date: 2026-07-04
  *
- * Description:    Provides the Routes source for the IRControl Android Compose sample.
+ * Description:    Declares navigation route keys and parameters.
  *
  * Revision log:
- * 2026-07-14: created by shdmfire and strawmanbobi
+ * 2026-07-04: created by shdmfire
  */
 @Serializable
 data object RouteHome : NavKey

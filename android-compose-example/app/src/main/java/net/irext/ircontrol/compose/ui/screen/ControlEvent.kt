@@ -3,12 +3,12 @@ package net.irext.ircontrol.compose.ui.screen
 
 /**
  * Filename:       ControlEvent.kt
- * Created:        Date: 2026-07-14
+ * Created:        Date: 2026-07-04
  *
- * Description:    Provides the ControlEvent source for the IRControl Android Compose sample.
+ * Description:    Defines one-time events emitted by the control screen view model.
  *
  * Revision log:
- * 2026-07-14: created by shdmfire and strawmanbobi
+ * 2026-07-04: created by shdmfire
  */
 
 sealed interface ControlEvent {
