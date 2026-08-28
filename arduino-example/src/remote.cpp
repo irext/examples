@@ -47,7 +47,7 @@
 #define SEG_ACTRL_LENGTH  (1)
 #define SEG_ACTRL_COMMAND (2)
 
-#define IR_SEND_PIN 3
+#define IR_SEND_PIN       (3)
 
 
 // external variable declarations
