@@ -3,9 +3,13 @@ package net.irext.ircontrol.ui.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -77,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        // re-check permissions when returning from settings
+        checkAndRequestStoragePermissions();
+
         FragmentManager mFragmentManager = this.getSupportFragmentManager();
         MainFragment mRemoteListFragment = (MainFragment) mFragmentManager.findFragmentById(R.id.fragment_remote);
 
@@ -110,6 +117,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkAndRequestStoragePermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            // Android 14+: use MANAGE_EXTERNAL_STORAGE
+            checkManageStoragePermission();
+        } else {
+            // Android 7.1 ~ 13: use legacy READ/WRITE_EXTERNAL_STORAGE
+            checkLegacyStoragePermissions();
+        }
+    }
+
+    private void checkManageStoragePermission() {
+        if (Environment.isExternalStorageManager()) {
+            Log.i(TAG, "MANAGE_EXTERNAL_STORAGE already granted.");
+            mReadPermissionGranted = true;
+            mWritePermissionGranted = true;
+        } else {
+            Log.w(TAG, "MANAGE_EXTERNAL_STORAGE not granted, redirecting to settings.");
+            Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+        }
+    }
+
+    private void checkLegacyStoragePermissions() {
         boolean readGranted = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         boolean writeGranted = ContextCompat.checkSelfPermission(this,
@@ -143,9 +173,22 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSIONS_REQUEST_STORAGE) {
-            Log.d(TAG, "storage permission requested successfully");
-            mReadPermissionGranted = true;
-            mWritePermissionGranted = true;
+            boolean allGranted = true;
+            for (int result : grantResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                Log.d(TAG, "storage permission granted");
+                mReadPermissionGranted = true;
+                mWritePermissionGranted = true;
+            } else {
+                Log.w(TAG, "storage permission denied");
+                mReadPermissionGranted = false;
+                mWritePermissionGranted = false;
+            }
         }
     }
 

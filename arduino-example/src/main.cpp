@@ -148,6 +148,7 @@ void onDisconnected(WiFiClient *client) {
     remoteClose();
     client->flush();
     client->stop();
+    delay(500);
     serialPrint(LOG_DEBUG, "Client disconnected");
 }
 
