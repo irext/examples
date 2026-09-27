@@ -336,7 +336,6 @@ static INT8 ir_ac_file_open(const char *file_name)
 
     if (ret <= 0)
     {
-        ir_printf("ir_ac_binary_open fread failed\n");
         fclose(stream);
         ir_free(binary_content);
         binary_length = 0;
@@ -347,7 +346,6 @@ static INT8 ir_ac_file_open(const char *file_name)
 
     if (IR_DECODE_FAILED == ir_ac_binary_open(binary_content, (UINT16) binary_length))
     {
-        ir_printf("ir_ac_binary_open failed\n");
         ir_free(binary_content);
         binary_length = 0;
         return IR_DECODE_FAILED;
@@ -791,6 +789,13 @@ UINT16 ir_decode_combo(const UINT8 category, const UINT8 sub_category,
         category >= REMOTE_CATEGORY_NEXT)
     {
         ir_printf("wrong remote category\n");
+        return IR_DECODE_FAILED;
+    }
+
+    if (sub_category < SUB_CATEGORY_QUATERNARY ||
+        sub_category >= SUB_CATEGORY_NEXT)
+    {
+        ir_printf("wrong remote sub category : %d\n", sub_category);
         return IR_DECODE_FAILED;
     }
 

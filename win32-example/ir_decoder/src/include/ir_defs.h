@@ -12,7 +12,9 @@ Revision log:
 #ifndef _IR_DEFS_H
 #define _IR_DEFS_H
 
-#define IR_DECODE_LIB_VER "1.5.3"
+#define IR_DECODE_LIB_VER "1.6.0"
+
+#define DEBUG  (1)
 
 #if defined (BOARD_PC)
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
@@ -62,7 +64,7 @@ void noprint(const char *fmt, ...);
 #else
 #define ir_printf noprint
 #endif
-#define USER_DATA_SIZE 1636
+#define USER_DATA_SIZE 2048
 // #define USER_DATA_SIZE 4096
 
 #ifdef __cplusplus

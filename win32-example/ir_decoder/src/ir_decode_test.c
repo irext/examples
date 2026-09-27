@@ -69,6 +69,7 @@ static INT8 decode_as_ac(char *file_name)
     int first_time = 1;
     int length = 0;
     int index = 0;
+    INT8 ret_val = IR_DECODE_SUCCEEDED;
 
     // get status
     UINT8 supported_mode = 0x00;
@@ -101,8 +102,8 @@ static INT8 decode_as_ac(char *file_name)
 
     if (IR_DECODE_FAILED == ir_file_open(REMOTE_CATEGORY_AC, 0, file_name))
     {
-        ir_close();
-        return IR_DECODE_FAILED;
+        ret_val = IR_DECODE_FAILED;
+        goto _exit;
     }
 
     do
@@ -215,7 +216,6 @@ static INT8 decode_as_ac(char *file_name)
                 case 11:
                     if (ac_status->ac_wind_dir == AC_SWING_OFF) {
                         ac_status->change_wind_direction = 1;
-
                     }
                     need_control = TRUE;
                     break;
@@ -227,12 +227,14 @@ static INT8 decode_as_ac(char *file_name)
 
             if (TRUE == op_match && TRUE == need_control)
             {
-                printf("switch AC to power = %d, mode = %d, temp = %d, speed = %d, swing = %d with key_code = %d\n",
+                printf("switch AC to power = %d, mode = %d, temp = %d, speed = %d, swing = %d, change_wind_dir = %d,"
+                       " with key_code = %d\n",
                        ac_status->ac_power,
                        ac_status->ac_mode,
                        ac_status->ac_temp,
                        ac_status->ac_wind_speed,
                        ac_status->ac_wind_dir,
+                       ac_status->change_wind_direction,
                        key_code);
                 length = ir_decode(key_code, user_data, ac_status);
                 printf("\n === binary decoded : %d\n", length);
@@ -245,9 +247,14 @@ static INT8 decode_as_ac(char *file_name)
         }
     } while (TRUE);
 
+_exit:
     ir_close();
 
-    return IR_DECODE_SUCCEEDED;
+    if (NULL != ac_status) {
+        free(ac_status);
+    }
+
+    return ret_val;
 }
 
 static INT8 decode_as_tv(char *file_name, UINT8 ir_hex_encode)

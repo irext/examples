@@ -16,8 +16,6 @@ import net.irext.decode.sdk.utils.Constants;
  */
 public class IRDecode {
 
-    private static final String TAG = IRDecode.class.getSimpleName();
-
     private static Object mSync = new Object();
 
     private native String irGetVersion();
@@ -53,6 +51,7 @@ public class IRDecode {
         System.out.println("loading decode library " + libPath);
         System.load(libPath);
     }
+
     public String getVersion() {
         return irGetVersion();
     }
@@ -153,26 +152,5 @@ public class IRDecode {
             return false;
         }
         return true;
-    }
-
-    public static void main(String[] args) {
-        int ret = 0;
-        System.out.println("This is IR decode test");
-        IRDecode irDecoder = IRDecode.getInstance();
-        if (Constants.ERROR_CODE_SUCCESS == irDecoder.irOpen(Constants.CategoryID.TV.getValue(),
-                1,
-                "/home/strawmanbobi/Downloads/test.bin")) {
-            int[] decoded =
-                    irDecoder.decodeBinary(1, null);
-            for (int i = 0; i < decoded.length; i++) {
-                System.out.print(decoded[i]);
-                if (i != decoded.length - 1) {
-                    System.out.print(", ");
-                }
-            }
-            System.out.println();
-            irDecoder.irClose();
-        }
-        System.out.println("library open : " + ret);
     }
 }
