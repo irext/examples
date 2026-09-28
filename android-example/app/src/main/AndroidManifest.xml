@@ -70,11 +70,11 @@
 
         <meta-data
                 android:name="irext_app_key"
-                android:value="your android app_key for hybrid mode OR your private cloud app_key for offline mode" />
+                android:value="e2370d4b9a4ebcac6c90f2f29c79573e" />
 
         <meta-data
             android:name="irext_app_secret"
-            android:value="your android app_secret for hybrid mode OR your private cloud app_secret for offline mode" />
+            android:value="2a52b92f4dbf8310d88f13e083f81ace" />
 
     </application>
 
