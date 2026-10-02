@@ -38,9 +38,10 @@ The Android example has been rewritten with Jetpack Compose. The Compose impleme
 
 A `TestScreen` has also been added for quick validation of a product's IR control codes. After selecting or specifying a target remote/product, you can use this screen to quickly test all available IR remote control codes without going through the full user operation flow each time.
 
-<img heigth="480px;" alt="image" src="https://github.com/user-attachments/assets/737e31fe-013d-41ae-bdef-331b5c8a06da" />
+<img width="288" height="640" alt="image" src="https://github.com/user-attachments/assets/83cb9202-f85e-46c6-8e2c-2a20995f615c" />
 
-<img heigth="480px;" alt="image" src="https://github.com/user-attachments/assets/3ad19f76-31fb-4b2d-8f64-25e28dccf1f6" />
+
+<img width="288" height="640" alt="image" src="https://github.com/user-attachments/assets/7a36810e-a97e-4ea4-b824-3ab81b9664c7" />
 
 ## Use Mobile Phone as Remote Control
 After the remote index binary code is downloaded, you can see the remote control panel,
