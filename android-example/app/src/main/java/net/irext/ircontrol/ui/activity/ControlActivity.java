@@ -233,7 +233,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
         RemoteControl currentRemoteControl = RemoteControl.getRemoteControl(currentRemoteId);
         if (currentRemoteControl != null) {
             Log.d(TAG, "processEBin, will send binary for remote control, id = " + currentRemoteId + 
-                  ", remoteControl.id = " + currentRemoteControl.getID() + 
+                  ", remoteControl.id = " + currentRemoteControl.getId() + 
                   ", remoteControl.category = " + currentRemoteControl.getCategoryId());
             
             String binFileName = FileUtils.binDir + FileUtils.FILE_NAME_PREFIX +

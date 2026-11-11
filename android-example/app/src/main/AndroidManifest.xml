@@ -51,23 +51,6 @@
                     android:value="net.irext.ircontrol.ui.activity.MainActivity"/>
         </activity>
 
-        <provider
-            android:name="com.activeandroid.content.ContentProvider"
-            android:authorities="net.irext.ircontrol"
-            android:enabled="true"
-            android:exported="false">
-        </provider>
-
-        <meta-data
-                android:name="AA_DB_NAME"
-                android:value="IRRemote"/>
-        <meta-data
-                android:name="AA_DB_VERSION"
-                android:value="5"/>
-        <meta-data
-                android:name="AA_MODELS"
-                android:value="net.irext.ircontrol.bean.RemoteControl"/>
-
         <meta-data
                 android:name="irext_app_key"
                 android:value="e2370d4b9a4ebcac6c90f2f29c79573e" />

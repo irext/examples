@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         }
         Intent intent = new Intent(this, ControlActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putLong(ControlActivity.KEY_REMOTE_ID, mCurrentRemoteControl.getID());
+        bundle.putLong(ControlActivity.KEY_REMOTE_ID, mCurrentRemoteControl.getId());
         intent.putExtras(bundle);
         startActivity(intent);
     }

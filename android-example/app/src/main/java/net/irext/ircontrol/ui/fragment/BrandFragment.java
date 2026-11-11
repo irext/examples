@@ -126,8 +126,8 @@ public class BrandFragment extends BaseCreateFragment {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public boolean onBackPressed() {
+        return super.onBackPressed();
     }
 
     private static class MsgHandler extends Handler {

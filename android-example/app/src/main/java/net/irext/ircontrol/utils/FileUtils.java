@@ -70,6 +70,18 @@ public class FileUtils {
         return file.exists() || file.mkdir();
     }
 
+    public static boolean deleteFile(String path) {
+        if (null == path) {
+            return false;
+        }
+        File file = new File(path);
+        boolean deleted = file.exists() && file.delete();
+        if (!deleted) {
+            Log.w(TAG, "failed to delete file : " + path);
+        }
+        return deleted;
+    }
+
     public static File getLocalFile(String fileName) {
         File file = new File(binDir);
         if (file.exists()) {

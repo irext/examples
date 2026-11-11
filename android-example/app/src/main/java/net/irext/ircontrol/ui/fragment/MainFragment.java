@@ -16,6 +16,7 @@ import net.irext.ircontrol.bean.RemoteControl;
 import net.irext.ircontrol.ui.activity.MainActivity;
 import net.irext.ircontrol.ui.adapter.RemoteControlAdapter;
 import net.irext.ircontrol.ui.widget.PullToRefreshListView;
+import net.irext.ircontrol.utils.FileUtils;
 import net.irext.ircontrol.utils.MessageUtils;
 
 import java.lang.ref.WeakReference;
@@ -101,6 +102,16 @@ public class MainFragment extends Fragment {
         }.start();
     }
 
+    private void deleteRemoteControl(RemoteControl remoteControl) {
+        RemoteControl.deleteRemoteControl(remoteControl.getId());
+
+        String binFileName = FileUtils.binDir + FileUtils.FILE_NAME_PREFIX +
+                remoteControl.getRemoteMap() + FileUtils.FILE_NAME_EXT;
+        FileUtils.deleteFile(binFileName);
+
+        listRemotes();
+    }
+
     private void refreshRemoteList() {
         if (null != mRemoteControls && mRemoteControls.size() > 0) {
             Log.d(TAG, "remote control fetched : " + mRemoteControls.size());
@@ -108,6 +119,12 @@ public class MainFragment extends Fragment {
             mRemoteControlList.setVisibility(View.VISIBLE);
             mRemoteControlAdapter = new RemoteControlAdapter(mParent, mRemoteControls);
             mRemoteControlAdapter.setRemoteControls(mRemoteControls);
+            mRemoteControlAdapter.setOnDeleteListener(new RemoteControlAdapter.OnDeleteListener() {
+                @Override
+                public void onDelete(RemoteControl remoteControl) {
+                    deleteRemoteControl(remoteControl);
+                }
+            });
             mRemoteControlList.setAdapter(mRemoteControlAdapter);
             mRemoteControlList.onRefreshComplete();
         } else {

@@ -12,6 +12,7 @@
     <!-- Main UI -->
     <string name="create_new">点击 + 安装遥控</string>
     <string name="storage_permission_warning">请先授权应用对存储进行读写</string>
+    <string name="button_delete">删除</string>
 
     <!-- Create New -->
     <string name="default_category">电视机</string>

@@ -67,11 +67,9 @@ public class CreateActivity extends AppCompatActivity {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (null == mFragment) {
+                if (null == mFragment || !mFragment.onBackPressed()) {
                     finish();
-                    return;
                 }
-                mFragment.onBackPressed();
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);

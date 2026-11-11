@@ -1,9 +1,10 @@
 package net.irext.ircontrol.bean;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+import net.irext.ircontrol.IRApplication;
 
 import java.util.List;
 
@@ -17,45 +18,57 @@ import java.util.List;
  * Revision log:
  * 2017-04-06: created by strawmanbobi
  */
-@Table(name = "RemoteControl")
+@Entity(tableName = "RemoteControl")
 @SuppressWarnings("unused")
-public class RemoteControl extends Model {
+public class RemoteControl {
 
-    @Column(name = "CategoryID")
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private long id;
+
+    @ColumnInfo(name = "CategoryID")
     private int categoryId;
 
-    @Column(name = "CategoryName")
+    @ColumnInfo(name = "CategoryName")
     private String categoryName;
 
-    @Column(name = "BrandID")
+    @ColumnInfo(name = "BrandID")
     private int brandId;
 
-    @Column(name = "BrandName")
+    @ColumnInfo(name = "BrandName")
     private String brandName;
 
-    @Column(name = "CityCode")
+    @ColumnInfo(name = "CityCode")
     private String cityCode;
 
-    @Column(name = "CityName")
+    @ColumnInfo(name = "CityName")
     private String cityName;
 
-    @Column(name = "OperatorID")
+    @ColumnInfo(name = "OperatorID")
     private String operatorId;
 
-    @Column(name = "OperatorName")
+    @ColumnInfo(name = "OperatorName")
     private String operatorName;
 
-    @Column(name = "Remote")
+    @ColumnInfo(name = "Remote")
     private String remote;
 
-    @Column(name = "Protocol")
+    @ColumnInfo(name = "Protocol")
     private String protocol;
 
-    @Column(name = "RemoteMap")
+    @ColumnInfo(name = "RemoteMap")
     private String remoteMap;
 
-    @Column(name = "SubCategory")
+    @ColumnInfo(name = "SubCategory")
     private int subCategory;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public int getCategoryId() {
         return categoryId;
@@ -153,10 +166,7 @@ public class RemoteControl extends Model {
         this.subCategory = subCategory;
     }
 
-    public long getID() {
-        return super.getId();
-    }
-
+    @Ignore
     public RemoteControl(int categoryId, String categoryName, int brandId, String brandName,
                          String cityCode, String cityName, String operatorId, String operatorName,
                          String remote, String protocol, String remoteMap, int subCategory) {
@@ -179,26 +189,18 @@ public class RemoteControl extends Model {
     }
 
     public static List<RemoteControl> listRemoteControls(int from, int count) {
-        return new Select()
-                .from(RemoteControl.class)
-                .orderBy("id DESC")
-                .offset(from).limit(count)
-                .execute();
+        return IRApplication.getDatabase().remoteControlDao().list(from, count);
     }
 
     public static long createRemoteControl(RemoteControl remoteControl) {
-        return remoteControl.save();
+        return IRApplication.getDatabase().remoteControlDao().insert(remoteControl);
     }
 
     public static RemoteControl getRemoteControl(long remoteID) {
-        List<RemoteControl> remoteControls = new Select()
-                .from(RemoteControl.class)
-                .where("id = ?", remoteID)
-                .execute();
+        return IRApplication.getDatabase().remoteControlDao().getById(remoteID);
+    }
 
-        if (null != remoteControls && remoteControls.size() > 0) {
-            return remoteControls.get(0);
-        }
-        return null;
+    public static void deleteRemoteControl(long remoteID) {
+        IRApplication.getDatabase().remoteControlDao().deleteById(remoteID);
     }
 }

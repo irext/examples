@@ -36,10 +36,14 @@ public abstract class BaseCreateFragment extends Fragment {
         return null;
     }
 
-    public void onBackPressed() {
+    // returns true if the back action is consumed by navigating to a parent page
+    // within the create flow; false when already at the root page (nothing to pop)
+    public boolean onBackPressed() {
         if (-1 != mFrom) {
             MessageUtils.postMessage(mParent.mMsgHandler, mFrom);
+            return true;
         }
+        return false;
     }
 
     void getFrom() {

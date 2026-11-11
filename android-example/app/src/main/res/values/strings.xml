@@ -12,6 +12,7 @@
     <!-- Main UI -->
     <string name="create_new">Tap + to create new remote control</string>
     <string name="storage_permission_warning">Please grant storage read and write permission first</string>
+    <string name="button_delete">Delete</string>
 
     <!-- Create New -->
     <string name="default_category">TV</string>

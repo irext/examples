@@ -251,15 +251,18 @@ public class CityFragment extends BaseCreateFragment {
     }
 
     @Override
-    public void onBackPressed() {
+    public boolean onBackPressed() {
         if (LEVEL_PROVINCE == mListLevel) {
-            super.onBackPressed();
+            return super.onBackPressed();
         } else if (LEVEL_CITY == mListLevel) {
             listProvinces();
+            return true;
         } else if (LEVEL_OPERATOR == mListLevel) {
             String prefix = mCurrentProvince.getCode().substring(0, 2);
             listCities(prefix);
+            return true;
         }
+        return false;
     }
 
     private static class MsgHandler extends Handler {

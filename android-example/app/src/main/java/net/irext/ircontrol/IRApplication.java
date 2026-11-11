@@ -1,10 +1,10 @@
 package net.irext.ircontrol;
 
+import android.app.Application;
 import android.os.Build;
 import android.util.Log;
 
-import com.activeandroid.ActiveAndroid;
-
+import net.irext.ircontrol.db.AppDatabase;
 import net.irext.webapi.WebAPIs;
 import net.irext.webapi.model.UserApp;
 import net.irext.webapi.WebAPICallbacks.SignInCallback;
@@ -20,12 +20,18 @@ import net.irext.webapi.WebAPICallbacks.SignInCallback;
  * 2017-03-28: created by strawmanbobi
  */
 @SuppressWarnings("unused")
-public class IRApplication extends com.activeandroid.app.Application {
+public class IRApplication extends Application {
 
     private static final String TAG = IRApplication.class.getSimpleName();
 
     private static final String ADDRESS = "http://192.168.135.128:8081";
     private static final String APP_NAME = "/irext-server";
+
+    private static AppDatabase sDatabase;
+
+    public static AppDatabase getDatabase() {
+        return sDatabase;
+    }
 
     public WebAPIs mWeAPIs = WebAPIs.getInstance(ADDRESS, APP_NAME);
 
@@ -56,8 +62,8 @@ public class IRApplication extends com.activeandroid.app.Application {
     public void onCreate() {
         super.onCreate();
 
-        // initialize ActiveAndroid
-        ActiveAndroid.initialize(this);
+        // initialize Room database
+        sDatabase = AppDatabase.getInstance(this);
 
         // login with guest-admin account
         new Thread() {
