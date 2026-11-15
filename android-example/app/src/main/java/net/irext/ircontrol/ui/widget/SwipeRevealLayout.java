@@ -8,6 +8,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewParent;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 
 /**
@@ -129,40 +131,79 @@ public class SwipeRevealLayout extends FrameLayout {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                // claimed on DOWN only when revealed; keep the gesture alive
+                // claim the gesture so the row receives MOVE events (required to detect the
+                // horizontal swipe); item clicks are re-dispatched manually on a plain tap
                 return true;
 
             case MotionEvent.ACTION_MOVE:
                 float dx = event.getX() - mDownX;
-                if (!mDragging && Math.abs(dx) < mTouchSlop) {
-                    return true;
-                }
-                mDragging = true;
-                // show the reveal panel as soon as a drag begins so it can follow the finger
-                if (dx < 0) {
-                    mRevealView.setVisibility(VISIBLE);
+                if (!mDragging) {
+                    if (Math.abs(dx) < mTouchSlop) {
+                        return true;
+                    }
+                    mDragging = true;
+                    // show the reveal panel as soon as a drag begins so it can follow the finger
+                    if (dx < 0) {
+                        mRevealView.setVisibility(VISIBLE);
+                    }
                 }
                 float start = mRevealed ? -mRevealWidth : 0f;
                 mContentView.setTranslationX(clamp(start + dx));
                 return true;
 
             case MotionEvent.ACTION_UP:
+                if (getParent() != null) {
+                    getParent().requestDisallowInterceptTouchEvent(false);
+                }
+                if (mDragging) {
+                    settle();
+                } else if (mRevealed) {
+                    // a tap while revealed: close the row, or trigger the action area
+                    handleTap(event);
+                } else {
+                    // a plain tap on a closed row: forward it as a list item click
+                    performItemClickForward();
+                }
+                mDragging = false;
+                return true;
+
             case MotionEvent.ACTION_CANCEL:
                 if (getParent() != null) {
                     getParent().requestDisallowInterceptTouchEvent(false);
                 }
-                if (!mDragging) {
-                    handleTap(event);
-                } else {
-                    float tx = mContentView.getTranslationX();
-                    animateTo(tx <= -mRevealWidth / 2f ? -mRevealWidth : 0f,
-                            tx <= -mRevealWidth / 2f);
+                if (mDragging) {
+                    settle();
                 }
                 mDragging = false;
                 return true;
 
             default:
                 return super.onTouchEvent(event);
+        }
+    }
+
+    private void settle() {
+        float tx = mContentView.getTranslationX();
+        boolean open = tx <= -mRevealWidth / 2f;
+        animateTo(open ? -mRevealWidth : 0f, open);
+    }
+
+    // ACTION_DOWN is consumed here so the row can track the swipe, which stops AbsListView from
+    // firing onItemClick; re-dispatch a tap on a closed row back to the parent list so tapping
+    // still navigates to the control panel, exactly as a native list click would.
+    private void performItemClickForward() {
+        ViewParent parent = getParent();
+        while (null != parent && !(parent instanceof AdapterView)) {
+            parent = parent.getParent();
+        }
+        if (parent instanceof AdapterView) {
+            AdapterView<?> list = (AdapterView<?>) parent;
+            int position = list.getPositionForView(this);
+            if (position != AdapterView.INVALID_POSITION) {
+                long id = null != list.getAdapter()
+                        ? list.getAdapter().getItemId(position) : AdapterView.INVALID_ROW_ID;
+                list.performItemClick(this, position, id);
+            }
         }
     }
 
