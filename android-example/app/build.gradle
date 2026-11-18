@@ -6,7 +6,7 @@ android {
         compileSdk 36
         targetSdkVersion 36
         minSdkVersion 26
-        versionCode 11
+        versionCode 12
         versionName '1.6.0'
 
         javaCompileOptions {

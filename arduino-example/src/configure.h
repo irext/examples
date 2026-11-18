@@ -27,8 +27,8 @@
 #include <cstdint>
 
 // Wi-Fi Configs
-#define SECRET_SSID "maomao"
-#define SECRET_PASS "20121207"
+#define SECRET_SSID "Maomao的小房子"
+#define SECRET_PASS "Maomao121207"
 
 // #define TEST_BIN_RECEIVE  (1)
 
