@@ -24,7 +24,7 @@ public class IRApplication extends Application {
 
     private static final String TAG = IRApplication.class.getSimpleName();
 
-    private static final String ADDRESS = "http://192.168.135.128:8081";
+    private static final String ADDRESS = "http://192.168.75.128:8082";
     private static final String APP_NAME = "/irext-server";
 
     private static AppDatabase sDatabase;
